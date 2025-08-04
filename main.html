@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Login</h2>
+  <form id="loginForm">
+    <label for="usuario">Usuário:</label>
+    <input type="text" id="usuario" required><br>
+
+    <label for="senha">Senha:</label>
+    <input type="password" id="senha" required><br>
+
+    <label for="tipo">Tipo de usuário:</label>
+    <select id="tipo" required>
+      <option value="">Selecione</option>
+      <option value="receptor">Quem será acionado</option>
+      <option value="acionador">Quem aciona</option>
+    </select><br><br>
+
+    <button type="submit">Entrar</button>
+  </form>
+
+  <script src="script.js"></script>
+</body>
+</html>
