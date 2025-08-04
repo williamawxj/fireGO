@@ -2,26 +2,47 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Escala</title>
+  <title>Registrar Escala</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <h2>Registrar Escala</h2>
-  <form>
+  <form id="escalaForm">
     <label>Início da escala:</label>
-    <input type="datetime-local"><br>
+    <input type="datetime-local" id="inicio"><br><br>
 
     <label>Fim da escala:</label>
-    <input type="datetime-local"><br>
+    <input type="datetime-local" id="fim"><br><br>
 
     <fieldset>
-      <legend>Veículos que estará disponível:</legend>
-      <label><input type="checkbox" value="ABT"> ABT</label><br>
-      <label><input type="checkbox" value="AR"> AR</label><br>
-      <label><input type="checkbox" value="UR"> UR</label><br>
+      <legend>Veículos disponíveis:</legend>
+      <label><input type="checkbox" name="veiculo" value="ABT"> ABT</label><br>
+      <label><input type="checkbox" name="veiculo" value="AR"> AR</label><br>
+      <label><input type="checkbox" name="veiculo" value="UR"> UR</label><br>
     </fieldset><br>
 
     <button type="submit">Salvar Escala</button>
   </form>
+
+  <script>
+    document.getElementById("escalaForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const inicio = document.getElementById("inicio").value;
+      const fim = document.getElementById("fim").value;
+      const veiculos = Array.from(document.querySelectorAll("input[name='veiculo']:checked"))
+                            .map(v => v.value);
+
+      const dadosEscala = {
+        inicio,
+        fim,
+        veiculos
+      };
+
+      localStorage.setItem("escalaDados", JSON.stringify(dadosEscala));
+
+      window.location.href = "escala_visualizar.html";
+    });
+  </script>
 </body>
 </html>

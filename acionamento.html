@@ -2,26 +2,64 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Acionamento</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Acionar Viatura</title>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
 </head>
 <body>
-  <h2>Acionar Veículo</h2>
-  <form>
-    <label for="veiculo">Veículo:</label>
+  <h2>Acionamento de Viatura</h2>
+  <form id="formAcionamento">
+    <label>Veículo:</label>
     <select id="veiculo">
       <option>ABT</option>
       <option>AR</option>
       <option>UR</option>
-    </select><br>
+    </select><br><br>
 
-    <label for="endereco">Endereço da ocorrência:</label>
-    <input type="text" id="endereco"><br>
+    <label>Endereço:</label>
+    <input type="text" id="endereco"><br><br>
 
-    <label for="tipo">Tipo de ocorrência:</label>
+    <label>Referência:</label>
+    <input type="text" id="referencia"><br><br>
+
+    <label>Tipo de ocorrência:</label>
     <input type="text" id="tipo"><br><br>
+
+    <label>Observações:</label>
+    <input type="text" id="observacoes"><br><br>
 
     <button type="submit">Acionar</button>
   </form>
+
+  <script>
+    // 🔹 Configuração Firebase
+    const firebaseConfig = {
+    apiKey: "AIzaSyAYOf3ZvOEZEwPlX0imy07gvKtRwU_maVU",
+    authDomain: "firego-fe89c.firebaseapp.com",
+    projectId: "firego-fe89c",
+    storageBucket: "firego-fe89c.firebasestorage.app",
+    messagingSenderId: "663070674855",
+    appId: "1:663070674855:web:5b600e89e73603f6d97082",
+    measurementId: "G-NW7TJWRQGY"
+    };
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // Enviar ocorrência
+    document.getElementById("formAcionamento").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const ocorrencia = {
+        veiculo: document.getElementById("veiculo").value,
+        endereco: document.getElementById("endereco").value,
+        referencia: document.getElementById("referencia").value,
+        tipo: document.getElementById("tipo").value,
+        observacoes: document.getElementById("observacoes").value
+      };
+
+      db.ref("ocorrencias").push(ocorrencia);
+      alert("Ocorrência acionada com sucesso!");
+      document.getElementById("formAcionamento").reset();
+    });
+  </script>
 </body>
 </html>

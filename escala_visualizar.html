@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Painel de Ocorrências</title>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+</head>
+<body>
+  <h2>Escala Registrada</h2>
+  <div id="escalaInfo"></div>
+
+  <h2>Painel de Ocorrências</h2>
+  <ul id="listaOcorrencias"></ul>
+
+  <script>
+    // 🔹 Configuração do Firebase (substitua pelos seus dados)
+    const firebaseConfig = {
+        apiKey: "AIzaSyAYOf3ZvOEZEwPlX0imy07gvKtRwU_maVU",
+        authDomain: "firego-fe89c.firebaseapp.com",
+        projectId: "firego-fe89c",
+        storageBucket: "firego-fe89c.firebasestorage.app",
+        messagingSenderId: "663070674855",
+        appId: "1:663070674855:web:5b600e89e73603f6d97082",
+        measurementId: "G-NW7TJWRQGY"
+    };
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // Recuperar escala do localStorage
+    const escala = JSON.parse(localStorage.getItem("escalaDados"));
+    document.getElementById("escalaInfo").innerHTML = `
+      <p><strong>Início:</strong> ${escala.inicio}</p>
+      <p><strong>Fim:</strong> ${escala.fim}</p>
+      <p><strong>Veículos:</strong> ${escala.veiculos.join(", ")}</p>
+    `;
+
+    // Escuta as ocorrências no Firebase
+    const lista = document.getElementById("listaOcorrencias");
+    db.ref("ocorrencias").on("child_added", (snapshot) => {
+      const ocorrencia = snapshot.val();
+
+      // Exibir apenas se a viatura acionada estiver na escala do usuário
+      if (escala.veiculos.includes(ocorrencia.veiculo)) {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <strong>Tipo:</strong> ${ocorrencia.tipo}<br>
+          <strong>Endereço:</strong> ${ocorrencia.endereco}<br>
+          <strong>Referência:</strong> ${ocorrencia.referencia}<br>
+          <strong>Observações:</strong> ${ocorrencia.observacoes}<br>
+          <strong>Viatura:</strong> ${ocorrencia.veiculo}
+          <hr>
+        `;
+        lista.appendChild(li);
+      }
+    });
+  </script>
+</body>
+</html>
